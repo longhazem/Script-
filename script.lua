@@ -1,60 +1,95 @@
--- Player và GUI
-local player = game.Players.LocalPlayer
-local plane = workspace:WaitForChild("Plane") -- đổi tên cho đúng
-local UIS = game:GetService("UserInputService")
-local RS = game:GetService("RunService")
 
--- Biến điều khiển
-local speed = 0
-local maxSpeed = 100
-local acceleration = 5
-local inputState = {W=false, A=false, S=false, D=false, Shift=false, Space=false}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game GUI</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #87ceeb; /* Màu xanh nhạt */
+        }
 
--- GUI kéo được
-local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
-local frame = Instance.new("Frame", gui)
-frame.Size = UDim2.new(0,200,0,50)
-frame.Position = UDim2.new(0.1,0,0.1,0)
-frame.BackgroundColor3 = Color3.fromRGB(40,40,40)
-frame.Active = true
-frame.Draggable = true
+        .container {
+            position: relative;
+            width: 300px;
+            height: 600px;
+        }
 
-local toggle = Instance.new("TextLabel", frame)
-toggle.Size = UDim2.new(1,0,1,0)
-toggle.Text = "WASD + Shift + Space control"
-toggle.TextScaled = true
-toggle.BackgroundTransparency = 1
-toggle.TextColor3 = Color3.fromRGB(255,255,255)
+        .character {
+            width: 50px;
+            height: 100px;
+            background-color: #ffcc00; /* Màu vàng cho nhân vật */
+            position: absolute;
+            bottom: 100px; 
+            left: 50%;
+            transform: translateX(-50%);
+        }
 
--- Xử lý bàn phím
-UIS.InputBegan:Connect(function(input, gp)
-    if gp then return end
-    if input.KeyCode == Enum.KeyCode.W then inputState.W = true end
-    if input.KeyCode == Enum.KeyCode.S then inputState.S = true end
-    if input.KeyCode == Enum.KeyCode.A then inputState.A = true end
-    if input.KeyCode == Enum.KeyCode.D then inputState.D = true end
-    if input.KeyCode == Enum.KeyCode.LeftShift then inputState.Shift = true end
-    if input.KeyCode == Enum.KeyCode.Space then inputState.Space = true end
-end)
+        .controls {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: grid;
+            grid-template-columns: repeat(3, 50px);
+            gap: 10px;
+        }
 
-UIS.InputEnded:Connect(function(input)
-    if input.KeyCode == Enum.KeyCode.W then inputState.W = false end
-    if input.KeyCode == Enum.KeyCode.S then inputState.S = false end
-    if input.KeyCode == Enum.KeyCode.A then inputState.A = false end
-    if input.KeyCode == Enum.KeyCode.D then inputState.D = false end
-    if input.KeyCode == Enum.KeyCode.LeftShift then inputState.Shift = false end
-    if input.KeyCode == Enum.KeyCode.Space then inputState.Space = false end
-end)
+        .control {
+            width: 50px;
+            height: 50px;
+            background-color: #ffffff;
+            text-align: center;
+            line-height: 50px;
+            border: 2px solid #000;
+            font-size: 24px;
+            cursor: pointer;
+        }
 
--- Di chuyển plane
-RS.RenderStepped:Connect(function(delta)
-    local moveDir = Vector3.new(0,0,0)
-    if inputState.W then moveDir = moveDir + Vector3.new(0,0,1) end
-    if inputState.S then moveDir = moveDir + Vector3.new(0,0,-1) end
-    if inputState.A then moveDir = moveDir + Vector3.new(-1,0,0) end
-    if inputState.D then moveDir = moveDir + Vector3.new(1,0,0) end
-    local currentSpeed = speed
-    if inputState.Shift then currentSpeed = maxSpeed end
-    if inputState.Space then moveDir = Vector3.new(0,1,0) end
-    plane.CFrame = plane.CFrame + moveDir.Unit * currentSpeed * delta
-end)
+        .control:hover {
+            background-color: #f0f0f0;
+        }
+
+        .gui {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="character"></div>
+        <div class="controls">
+            <div class="control" id="w">W</div>
+            <div class="control" id="a">A</div>
+            <div class="control" id="s">S</div>
+            <div class="control" id="d">D</div>
+        </div>
+        <div class="gui">gui</div>
+    </div>
+    <script>
+        document.getElementById("w").onclick = function() {
+            alert("Move Up");
+        }
+        document.getElementById("a").onclick = function() {
+            alert("Move Left");
+        }
+        document.getElementById("s").onclick = function() {
+            alert("Move Down");
+        }
+        document.getElementById("d").onclick = function() {
+            alert("Move Right");
+        }
+    </script>
+</body>
+</html>
