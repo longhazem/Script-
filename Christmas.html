@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hộp Quà Bí Mật</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom, #1a2980, #26d0ce);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: white;
+            position: relative;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            color: #fff;
+        }
+        
+        .gift-container {
+            position: relative;
+            height: 400px;
+            margin: 20px 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .gift-box {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            z-index: 10;
+            animation: float 3s infinite ease-in-out;
+        }
+        
+        .box {
+            position: relative;
+            width: 100%;
+            height: 70px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .lid {
+            position: absolute;
+            width: 110%;
+            height: 30px;
+            background: linear-gradient(45deg, #ff8e53, #ff6b6b);
+            top: -30px;
+            left: -5%;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .ribbon {
+            position: absolute;
+            background: #4ECDC4;
+            width: 25px;
+            height: 90px;
+            left: 47px;
+            top: -35px;
+            z-index: 1;
+        }
+        
+        .bow {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #4ECDC4;
+            top: -50px;
+            left: 40px;
+            border-radius: 50%;
+            box-shadow: 0 0 0 12px rgba(78, 205, 196, 0.3);
+            z-index: 2;
+        }
+        
+        .bow:before, .bow:after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: #4ECDC4;
+            border-radius: 50%;
+        }
+        
+        .bow:before {
+            top: 8px;
+            left: -15px;
+        }
+        
+        .bow:after {
+            top: 8px;
+            right: -15px;
+        }
+        
+        .letter {
+            position: absolute;
+            width: 320px;
+            max-width: 90vw;
+            height: 220px;
+            background: linear-gradient(to bottom, #fff5e6, #ffe4cc);
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            padding: 25px;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #5a3800;
+            text-align: center;
+            border: 2px solid #ffcc80;
+        }
+        
+        .letter-content {
+            font-style: italic;
+            line-height: 1.6;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        .letter h2 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .close-btn {
+            padding: 10px 25px;
+            background: linear-gradient(to right, #ff6b6b, #ff8e53);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 107, 107, 0.5);
+        }
+        
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            opacity: 0.9;
+            z-index: 1;
+        }
+        
+        .cloud1 {
+            width: 120px;
+            height: 70px;
+            top: 60px;
+            left: 20%;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        .cloud2 {
+            width: 140px;
+            height: 80px;
+            top: 100px;
+            right: 15%;
+            animation: float 18s infinite ease-in-out;
+        }
+        
+        .cloud:before, .cloud:after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+        }
+        
+        .cloud1:before {
+            width: 70px;
+            height: 70px;
+            top: -25px;
+            left: 15px;
+        }
+        
+        .cloud1:after {
+            width: 80px;
+            height: 80px;
+            top: -35px;
+            right: 15px;
+        }
+        
+        .cloud2:before {
+            width: 80px;
+            height: 80px;
+            top: -30px;
+            left: 15px;
+        }
+        
+        .cloud2:after {
+            width: 90px;
+            height: 90px;
+            top: -40px;
+            right: 15px;
+        }
+        
+        .instruction {
+            margin-top: 20px;
+            color: #fff;
+            font-size: 1.2rem;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+        
+        .signature {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            font-style: italic;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+        
+        @keyframes appear {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.6;
+            }
+        }
+        
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        
+        /* Responsive styles for mobile devices (360px - 612px) */
+        @media (max-width: 612px) and (min-width: 360px) {
+            .gift-container {
+                height: 300px;
+            }
+            
+            .gift-box {
+                width: 100px;
+                height: 100px;
+                animation: float 2.5s infinite ease-in-out;
+            }
+            
+            .box {
+                height: 60px;
+            }
+            
+            .lid {
+                height: 25px;
+                top: -25px;
+            }
+            
+            .ribbon {
+                width: 20px;
+                height: 75px;
+                left: 40px;
+                top: -30px;
+            }
+            
+            .bow {
+                width: 35px;
+                height: 35px;
+                top: -42px;
+                left: 33px;
+            }
+            
+            .bow:before, .bow:after {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .letter {
+                width: 280px;
+                height: 200px;
+                padding: 20px;
+            }
+            
+            .letter h2 {
+                font-size: 1.5rem;
+                margin-bottom: 10px;
+            }
+            
+            .letter-content {
+                font-size: 1rem;
+                margin-bottom: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
+            
+            .instruction {
+                font-size: 1rem;
+            }
+            
+            .cloud1, .cloud2 {
+                display: none;
+            }
+        }
+        
+        /* Styles for very small screens (below 360px) */
+        @media (max-width: 359px) {
+            .gift-container {
+                height: 250px;
+            }
+            
+            .gift-box {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .box {
+                height: 50px;
+            }
+            
+            .lid {
+                height: 20px;
+                top: -20px;
+            }
+            
+            .ribbon {
+                width: 15px;
+                height: 60px;
+                left: 32px;
+                top: -25px;
+            }
+            
+            .bow {
+                width: 30px;
+                height: 30px;
+                top: -35px;
+                left: 25px;
+            }
+            
+            .bow:before, .bow:after {
+                width: 15px;
+                height: 15px;
+            }
+            
+            .letter {
+                width: 250px;
+                height: 180px;
+                padding: 15px;
+            }
+            
+            .letter h2 {
+                font-size: 1.3rem;
+            }
+            
+            .letter-content {
+                font-size: 0.9rem;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .instruction {
+                font-size: 0.9rem;
+            }
+            
+            .cloud1, .cloud2 {
+                display: none;
+            }
+        }
+        
+        /* Styles for larger screens (above 612px) */
+        @media (min-width: 613px) {
+            .gift-box {
+                animation: float 3s infinite ease-in-out;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <h1>Hộp Quà Đặc Biệt</h1>
+        
+        <div class="gift-container">
+            <div class="cloud cloud1"></div>
+            <div class="cloud cloud2"></div>
+            
+            <div class="gift-box">
+                <div class="box">
+                    <div class="lid"></div>
+                    <div class="ribbon"></div>
+                    <div class="bow"></div>
+                </div>
+            </div>
+            
+            <div class="letter">
+                <h2>Thư Gửi Bạn!</h2>
+                <div class="letter-content">
+                    <p>Chúc bạn một ngày thật tuyệt vời!</p>
+                    <p>Hãy luôn giữ nụ cười trên môi</p>
+                    <p>và trái tim ấm áp trong lòng.</p>
+                    <p>Mọi điều tốt đẹp sẽ đến với bạn!</p>
+                </div>
+                <button class="close-btn">Đóng thư</button>
+            </div>
+        </div>
+        
+        <div class="instruction">Ấn vào hộp quà để mở!</div>
+    </div>
+    
+    <div class="signature">Created by mr_longtokai</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const giftBox = document.querySelector('.gift-box');
+            const letter = document.querySelector('.letter');
+            const closeBtn = document.querySelector('.close-btn');
+            
+            // Create stars
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 5 + 's';
+                starsContainer.appendChild(star);
+            }
+            
+            giftBox.addEventListener('click', function() {
+                // Add opening animation to the gift box
+                giftBox.style.transform = 'scale(0.8)';
+                giftBox.style.opacity = '0.7';
+                
+                setTimeout(() => {
+                    // Hide the gift box
+                    giftBox.style.display = 'none';
+                    
+                    // Show the letter with animation
+                    letter.style.display = 'flex';
+                    letter.style.animation = 'appear 0.5s forwards';
+                }, 300);
+            });
+            
+            closeBtn.addEventListener('click', function() {
+                // Hide the letter
+                letter.style.display = 'none';
+                
+                // Show the gift box again with animation
+                giftBox.style.display = 'block';
+                giftBox.style.opacity = '0';
+                giftBox.style.transform = 'scale(1.2)';
+                
+                setTimeout(() => {
+                    giftBox.style.transition = 'all 0.5s ease';
+                    giftBox.style.opacity = '1';
+                    giftBox.style.transform = 'scale(1)';
+                }, 10);
+            });
+        });
+    </script>
+</body>
+  </html>
